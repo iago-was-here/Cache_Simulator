@@ -5,12 +5,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.UIManager;
-import javax.swing.JSplitPane;
 import java.awt.Font;
-import java.awt.Toolkit;
 import javax.swing.JLabel;
 import java.awt.FlowLayout;
-import java.awt.List;
 
 public class AppGUI extends JFrame {
 
