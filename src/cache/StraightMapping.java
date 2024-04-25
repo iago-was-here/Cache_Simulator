@@ -1,14 +1,20 @@
 package cache;
 
+import app.Config;
+
 public class StraightMapping extends Cache{
 
-	public StraightMapping() {
-		
+	public StraightMapping(Config config) {
+		super();
+		Long[] cache = new Long[(int) config.getCacheAdressBits()];
 	}
 	@Override
 	public Boolean fetchWord(int address, int tag) {
-		// TODO Auto-generated method stub
 		return null;
+	}
+	@Override
+	public void replace() {
+		
 	}
 
 }

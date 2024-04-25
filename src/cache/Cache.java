@@ -1,5 +1,7 @@
 package cache;
 
+import helper.Binary;
+
 public abstract class Cache {
 	private int size;
 	private int addressSize;
@@ -8,6 +10,17 @@ public abstract class Cache {
 
 	public abstract Boolean fetchWord(int address, int tag);
 
+	public abstract void replace();
+	
+	public Cache() {
+		
+	}
+	
+	public int[] translateAddress(int virtualAddress) {
+		int[] realAddress = Binary.intToBinary(virtualAddress, this.addressSize);
+		return realAddress;
+	}
+	
 	public int getSize() {
 		return size;
 	}
