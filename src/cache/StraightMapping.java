@@ -2,19 +2,41 @@ package cache;
 
 import app.Config;
 
-public class StraightMapping extends Cache{
+import java.util.Arrays;
 
-	public StraightMapping(Config config) {
-		super();
-		Long[] cache = new Long[(int) config.getCacheAdressBits()];
-	}
-	@Override
-	public Boolean fetchWord(int address, int tag) {
-		return null;
-	}
-	@Override
-	public void replace() {
-		
-	}
+public class StraightMapping extends Cache {
+
+    public StraightMapping(Config config) {
+        super(config.getCacheRowQnt(), config.getWordsByRow());
+    }
+
+    public boolean fetchWord(String tag, String cacheRow, String word) {
+        long cacheRowNumber = (Integer.parseInt(cacheRow, 2) % this.getRowsQnt()), columnCounter = 0;
+        boolean found = false;
+
+        replace(cacheRowNumber, columnCounter, tag);
+        String[] currentCacheRow = super.getCache()[(int) cacheRowNumber];
+
+        if (currentCacheRow[0] != null && currentCacheRow[0].equals(tag)) {
+            for (int i = 1; i < currentCacheRow.length; i++) {
+                if (currentCacheRow[i] != null) {
+                    found = currentCacheRow[i].equals(word);
+                }
+            }
+        }
+
+
+        for (String cacheValue : super.getCache()[(int) cacheRowNumber]) {
+            if (cacheValue != null) {
+                found = word.equals(cacheValue);
+            }
+        }
+
+        return found;
+    }
+
+    public void replace(long cacheRowNumber, long column, String cacheValue) {
+        super.getCache()[(int) cacheRowNumber][(int) column] = cacheValue;
+    }
 
 }

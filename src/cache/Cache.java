@@ -3,53 +3,21 @@ package cache;
 import helper.Binary;
 
 public abstract class Cache {
-	private int size;
-	private int addressSize;
-	private int rowsQnt;
-	private int wordsByline;
+    protected String[][] cache;
+    protected long rowsQnt;
 
-	public abstract Boolean fetchWord(int address, int tag);
+    public Cache(long rowsQnt, long wordsByRow) {
+        long depth = wordsByRow + 1; //add extra column to store the tag
+        this.cache = new String[(int) rowsQnt][(int) depth];
+        this.rowsQnt = (int) rowsQnt;
+    }
 
-	public abstract void replace();
-	
-	public Cache() {
-		
-	}
-	
-	public int[] translateAddress(int virtualAddress) {
-		int[] realAddress = Binary.intToBinary(virtualAddress, this.addressSize);
-		return realAddress;
-	}
-	
-	public int getSize() {
-		return size;
-	}
+    public String[][] getCache() {
+        return cache;
+    }
 
-	public void setSize(int size) {
-		this.size = size;
-	}
-
-	public int getRowsQnt() {
-		return rowsQnt;
-	}
-
-	public void setRowsQnt(int rowsQnt) {
-		this.rowsQnt = rowsQnt;
-	}
-
-	public int getWordsByline() {
-		return wordsByline;
-	}
-
-	public void setWordsByline(int wordsByline) {
-		this.wordsByline = wordsByline;
-	}
-
-	public int getAddressSize() {
-		return addressSize;
-	}
-
-	public void setAddressSize(int addressSize) {
-		this.addressSize = addressSize;
-	}
+    public long getRowsQnt() {
+        return rowsQnt;
+    }
 }
+
