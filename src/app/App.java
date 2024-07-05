@@ -12,25 +12,22 @@ public class App {
         ArrayList<String> configFile;
         ArrayList<String> accessFile;
 
-        configFile = FileManager.stringReader("/C://Users//iagoa//Desktop//Projetos//OAC//config.txt/");
-        accessFile = FileManager.stringReader("/C://Users//iagoa//Desktop//Projetos//OAC//teste_1.txt/");
+        configFile = FileManager.stringReader();
+        accessFile = FileManager.stringReader();
 
         Config config = new Config(configFile);
 
-        MemoryManagementUnit mmu = new MemoryManagementUnit(accessFile);
-        StraightMapping cache = new StraightMapping(config);
-
-        mmu.setRealAddresses(config.getMainMemoryAddressBits());
-
+        MemoryManagementUnit mmu = new MemoryManagementUnit(accessFile, config.getMainMemoryAddressBits());
+        AssociativeMapping cache = new AssociativeMapping(config);
 
         int cacheHits = 0, cacheMisses = 0;
 
         for (String realAddress : mmu.getRealAddresses()) {
-            String tag = realAddress.substring(0, (int) config.getTagSize()),
-                    cacheRow = realAddress.substring((int) config.getTagSize(), (int) (config.getTagSize() + config.getCacheAdressBits())),
-                    word = realAddress.substring((int) (config.getTagSize() + config.getCacheAdressBits()));
+            String tag = realAddress.substring(0, (int) config.getTagBits()),
+                    cacheRow = realAddress.substring((int) config.getTagBits(), (int) (config.getTagBits() + config.getCacheAdressBits())),
+                    word = realAddress.substring((int) (config.getTagBits() + config.getCacheAdressBits()));
 
-            if (cache.fetchWord(tag, cacheRow, word)) {
+            if (cache.fetchWord(tag, cacheRow)) {
                 cacheHits++;
                 continue;
             }
@@ -38,10 +35,16 @@ public class App {
             cacheMisses++;
         }
 
+        int totalAccesses = cacheHits + cacheMisses;
+        double hitPercentage = (double) (cacheHits * 100) / totalAccesses, missesPercentage = (double) (cacheMisses * 100) / totalAccesses;
+
         System.out.println(cacheHits);
         System.out.println(cacheMisses);
-        for (String[] cacheValue : cache.getCache()) {
-            System.out.println(Arrays.toString(cacheValue));
-        }
+        System.out.println(hitPercentage);
+        System.out.println(missesPercentage);
+
+//        for (String cacheValue : cache.getCache()) {
+//            System.out.println(cacheValue);
+//        }
     }
 }

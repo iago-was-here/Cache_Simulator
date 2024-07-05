@@ -3,21 +3,13 @@ package cache;
 import helper.Binary;
 
 public abstract class Cache {
-    protected String[][] cache;
-    protected long rowsQnt;
+    protected String[] cache;
 
-    public Cache(long rowsQnt, long wordsByRow) {
-        long depth = wordsByRow + 1; //add extra column to store the tag
-        this.cache = new String[(int) rowsQnt][(int) depth];
-        this.rowsQnt = (int) rowsQnt;
+    public Cache() {
     }
 
-    public String[][] getCache() {
+    public String[] getCache() {
         return cache;
-    }
-
-    public long getRowsQnt() {
-        return rowsQnt;
     }
 }
 

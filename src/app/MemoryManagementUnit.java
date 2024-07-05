@@ -6,32 +6,34 @@ import helper.Binary;
 
 public class MemoryManagementUnit {
 
-	private final int[] virtualAddresses;
-	private String[] realAddresses;
+    private final int[] virtualAddresses;
+    private String[] realAddresses;
 
-	public MemoryManagementUnit(ArrayList<String> accessFile) {
-		int accessAmount = accessFile.size();
-		this.virtualAddresses = new int[accessAmount];
+    public MemoryManagementUnit(ArrayList<String> accessFile, long mainMemoryAdressBits) {
+        int accessQnt = accessFile.size();
+        this.virtualAddresses = new int[accessQnt];
 
-		for (int i = 0; i < accessAmount; i++) {
-			String lineContent = accessFile.get(i);
+        for (int i = 0; i < accessQnt; i++) {
+            String lineContent = accessFile.get(i);
 
-			this.virtualAddresses[i] = Integer.parseInt(lineContent);
-		}
-	}
+            this.virtualAddresses[i] = Integer.parseInt(lineContent);
+        }
 
-	public void setRealAddresses(long size) {
-		int testsAmount = this.virtualAddresses.length;
-		this.realAddresses = new String[testsAmount];
+        this.setRealAddresses(mainMemoryAdressBits);
+    }
 
-		for (int i = 0; i < testsAmount; i++) {
-			int currentValue = this.virtualAddresses[i];
+    public void setRealAddresses(long size) {
+        int testsAmount = this.virtualAddresses.length;
+        this.realAddresses = new String[testsAmount];
 
-			this.realAddresses[i] = Binary.intToBinaryString(currentValue, (int) size);
-		}
-	}
+        for (int i = 0; i < testsAmount; i++) {
+            int currentValue = this.virtualAddresses[i];
 
-	public String[] getRealAddresses() {
-		return realAddresses;
-	}
+            this.realAddresses[i] = Binary.intToBinaryString(currentValue, (int) size);
+        }
+    }
+
+    public String[] getRealAddresses() {
+        return realAddresses;
+    }
 }

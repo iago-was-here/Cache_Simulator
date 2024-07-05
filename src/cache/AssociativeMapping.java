@@ -2,31 +2,28 @@ package cache;
 
 import app.Config;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class AssociativeMapping extends Cache {
+    protected HashMap<Long, String> cache;
 
     public AssociativeMapping(Config config) {
-        super(config.getCacheRowQnt(), config.getWordsByRow());
+        this.cache = new HashMap<Long, String>();
     }
 
-    public boolean fetchWord(String tag, String word) {
-        boolean found = false;
+    public boolean fetchWord(String tag, String cacheRow) {
+        long cacheRowNumber = Long.parseLong(cacheRow, 2);
+        boolean found = this.cache.containsValue(tag);
 
-        for (long i = 0; i < super.getCache().length; i++) {
-            String[] cureentRow = super.getCache()[(int) i];
-            for (long j = 1; j < cureentRow.length; j++) {
-                String currentValue = super.getCache()[(int) i][(int) j];
-                if (currentValue != null) {
-                    found = currentValue.equals(word);
-                }
-            }
+        if (!found) {
+            replace(cacheRowNumber, tag);
         }
-
-
 
         return found;
     }
 
-    public void replace(long cacheRowNumber, long column, String value) {
-        super.getCache()[(int) cacheRowNumber][(int) column] = value;
+    public void replace(long cacheRowNumber, String value) {
+        this.cache.put(cacheRowNumber, value);
     }
 }
